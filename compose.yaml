@@ -1,0 +1,43 @@
+services:
+  mysql:
+    image: mysql:8.0.36-debian
+    container_name: alphacode-mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_USER=alphacode
+      - MYSQL_DATABASE=alphacode_teste
+      - MYSQL_ROOT_PASSWORD=123456
+    ports:
+      - 8001:3306
+    networks:
+      - codeigniter-network
+    volumes:
+      - mysql_data:/bitnami/mysql
+
+  codeigniter:
+    image: bitnami/codeigniter:4.4.5
+    container_name: alphacode-codeigniter
+    ports:
+      - 8000:8000
+    environment:
+      - CODEIGNITER_PROJECT_NAME=alphacode
+      - DB_HOST=mysql
+      - DB_PORT=8001
+      - DB_USERNAME=alphacode
+      - DB_PASSWORD=123456
+      - DB_DATABASE=alphacode_teste
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - codeigniter-network
+    volumes:
+      - ${PWD}:/app
+    depends_on:
+      - mysql      
+
+networks:
+  codeigniter-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
