@@ -6,20 +6,6 @@ Nome: Ryan Alves Martins
 Teste: teste-php-2 (vagas/candidatos)
 ## Instalação
 
-#### Utilizando Docker-compose
-iniciando o projeto
-```bash
-docker-compose up -d
-```
-parando o projeto
-```bash
-docker-compose stop
-```
-removendo o projeto
-```bash
-docker-compose down
-```
-
 #### Utilizando Docker
 iniciando o projeto
 ```bash
@@ -42,7 +28,6 @@ docker run -d \
   --network alphacode-network \
   -v alphacode_mysql_data:/bitnami/mysql \
   mysql:8.0.36-debian
-
 ```
 
 ```bash
@@ -51,15 +36,18 @@ docker run -d \
   -p 8000:8000 \
   --network alphacode-network \
   -e CODEIGNITER_PROJECT_NAME=alphacode \
-  -e DB_HOST=mysql \
-  -e DB_PORT=8001 \
-  -e DB_USERNAME=alphacode \
-  -e DB_PASSWORD=123456 \
-  -e DB_DATABASE=alphacode_teste \
-  -e ALLOW_EMPTY_PASSWORD=yes \
+  -e CODEIGNITER_PORT_NUMBER=8000 \
+  -e CODEIGNITER_DATABASE_HOST=mysql \
+  -e CODEIGNITER_DATABASE_PORT_NUMBER=3306 \
+  -e CODEIGNITER_DATABASE_NAME=alphacode_teste \
+  -e CODEIGNITER_DATABASE_USER=root \
+  -e CODEIGNITER_DATABASE_PASSWORD=123456 \
   -v ${PWD}:/app \
-  bitnami/codeigniter:latest
+  bitnami/codeigniter:4.4.5
+```
 
+```bash
+docker exec -it alphacode-codeigniter bash -c "cd alphacode && php spark migrate"
 ```
 
 parando o projeto
