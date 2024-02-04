@@ -23,10 +23,13 @@ class Auth extends BaseController
         $email = $this->request->getVar('email');
         $senha = $this->request->getVar('senha');
 
-        $usuario = $usuarioModel->autenticar(
-            $email,
-            $senha
-        );
+        $usuario = $usuarioModel->autenticar($email, $senha);
+        if (!$usuario) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Usuário ou senha inválidos!',
+            ])->setStatusCode(401);
+        }
 
         $iat = time();
         $exp = $iat + 60 * 60 * 4;

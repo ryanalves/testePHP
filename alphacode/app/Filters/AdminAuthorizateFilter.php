@@ -29,7 +29,8 @@ class AdminAuthorizateFilter implements FilterInterface
             $response->setStatusCode(401);
             return $response;
         }
-        if ($usuaro->candidato_id !== null) {
+
+        if ($usuario["candidato_id"] !== null) {
             $response = service('response');
             $response->setJSON(['success' => false, 'message' => 'Acesso restrito a administradores!']);
             $response->setStatusCode(401);

@@ -20,7 +20,7 @@ class UsuarioModel extends Model
 
     function autenticar($user, $senha)
     {
-        $sql = "SELECT * FROM usuarios WHERE (user = :user: OR email = :user:) AND senha = :senha:";
+        $sql = "SELECT * FROM usuarios WHERE (user = :user: OR email = :user:) AND senha = :senha: AND deleted_at IS NULL ";
         $user = $this->db->query($sql, [
             'user' => $user,
             'senha' => md5($senha)
