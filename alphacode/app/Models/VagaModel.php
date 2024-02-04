@@ -8,6 +8,9 @@ class VagaModel extends Model
 {
     protected $table = 'vagas';
 
+    protected $useSoftDeletes = true;
+    protected $useTimestamps = true;
+
     protected $allowedFields = [
         'nome',
         'tipo',

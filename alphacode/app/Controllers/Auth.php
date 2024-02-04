@@ -7,9 +7,13 @@ use Firebase\JWT\JWT;
 
 class Auth extends BaseController
 {
-    public function index(): string
+    public function index()
     {
-        return 'Hello World';
+        $usuario = $this->request->usuario ?? null;
+        return $this->response->setJSON([
+            "success" => true,
+            "data" => $usuario
+        ]);
     }
 
     function login()

@@ -8,6 +8,9 @@ class CandidatoModel extends Model
 {
     protected $table = 'candidatos';
 
+    protected $useSoftDeletes = true;
+    protected $useTimestamps = true;
+
     protected $allowedFields = [
         'nome',
         'data_nascimento',
