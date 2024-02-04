@@ -41,7 +41,7 @@ class Vaga extends BaseController
             'tipo' => 'required|in_list[CLT,PJ,FREELANCER]',
             'status' => 'required|in_list[DISPONIVEL,PAUSADO,ENCERRADO]',
             'area' => 'required|max_length[255]',
-            'pretensao' => 'required|numeric',
+            "pretensao" => "required|numeric|greater_than_equal_to[0]",
             'descricao' => 'required',
         ];
 
@@ -94,7 +94,7 @@ class Vaga extends BaseController
             "tipo" => "required|in_list[CLT,PJ,FREELANCER]",
             "status" => "required|in_list[DISPONIVEL,PAUSADO,ENCERRADO]",
             "area" => "required|max_length[255]",
-            "pretensao" => "required|numeric",
+            "pretensao" => "required|numeric|greater_than_equal_to[0]",
             "descricao" => "required",
         ];
 
@@ -112,6 +112,13 @@ class Vaga extends BaseController
                 'success' => false,
                 'message' => 'Erro ao editar vaga!',
                 'errors' => $this->validator->getErrors(),
+            ])->setStatusCode(400);
+        }
+
+        if (sizeof($dados) == 0) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Nenhum dado enviado para edição!',
             ])->setStatusCode(400);
         }
 

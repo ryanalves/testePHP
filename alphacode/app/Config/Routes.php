@@ -33,4 +33,13 @@ $routes->group('api', static function ($routes) {
         $routes->put('(:num)', 'Usuario::editarUsuario/$1', ['filter' => 'adminAuthorizate']);
         $routes->delete('', 'Usuario::deletarUsuarios', ['filter' => 'adminAuthorizate']);
     });
+
+    $routes->group('candidato', static function ($routes) {
+        $routes->get('(:num)', 'Candidato::buscarCandidato/$1', ['filter' => 'adminAuthorizate']);
+        $routes->get('', 'Candidato::listarCandidatos', ['filter' => 'adminAuthorizate']);
+        $routes->post('', 'Candidato::criarCandidato', ['filter' => 'adminAuthorizate']);
+        $routes->put('', 'Candidato::editarCandidato', ['filter' => 'authorizate']);
+        $routes->put('(:num)', 'Candidato::editarCandidatoPorId/$1', ['filter' => 'adminAuthorizate']);
+        $routes->delete('', 'Candidato::deletarCandidatos', ['filter' => 'adminAuthorizate']);
+    });
 });
