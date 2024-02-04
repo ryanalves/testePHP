@@ -9,6 +9,9 @@ class Vaga extends BaseController
     public function buscarVaga($id)
     {
         $vagaModel = model('VagaModel');
+        $candidatoVagaModel = model('CandidatoVagaModel');
+        $candidatoModel = model('CandidatoModel');
+
         $vaga = $vagaModel->find($id);
         if (!$vaga) {
             return $this->response->setJSON([
@@ -16,6 +19,18 @@ class Vaga extends BaseController
                 'message' => 'Vaga não encontrada!',
             ])->setStatusCode(404);
         }
+        
+        $candidatosVaga = $candidatoVagaModel->where('vaga_id', $id)->findAll();
+        $candidatosIds = [];
+        foreach ($candidatosVaga as $candidatoVaga) {
+            $candidatosIds[] = $candidatoVaga['candidato_id'];
+        }
+        $candidatos = [];
+        if (sizeof($candidatosIds) > 0) {
+            $candidatos = $candidatoModel->find($candidatosIds);
+        }
+        $vaga['candidatos'] = $candidatos;
+
         return $this->response->setJSON([
             'success' => true,
             'data' => $vaga,
@@ -26,6 +41,26 @@ class Vaga extends BaseController
     {
         $vagaModel = model('VagaModel');
         $vagas = $vagaModel->findAll();
+        return $this->response->setJSON([
+            'success' => true,
+            'data' => $vagas,
+        ]);
+    }
+
+    public function listarCandidaturas()
+    {
+        $candidatoVagaModel = model('CandidatoVagaModel');
+        $vagasModel = model('VagaModel');
+
+        $usuario = $this->request->usuario;
+
+        $candidatoVagas = $candidatoVagaModel->where('candidato_id', $usuario['candidato_id'])->findAll();
+        $vagasIds = [];
+        foreach ($candidatoVagas as $candidatoVaga) {
+            $vagasIds[] = $candidatoVaga['vaga_id'];
+        }
+        $vagas = $vagasModel->find($vagasIds);
+
         return $this->response->setJSON([
             'success' => true,
             'data' => $vagas,
@@ -71,6 +106,57 @@ class Vaga extends BaseController
             'success' => true,
             'message' => 'Vaga criada com sucesso!',
             'data' => $vaga,
+        ]);
+    }
+
+    public function candidatar($vaga_id)
+    {
+        $vagaModel = model('VagaModel');
+        $candidatoVagaModel = model('CandidatoVagaModel');
+
+        $vaga = $vagaModel->find($vaga_id);
+        if (!$vaga) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Vaga não encontrada!',
+            ])->setStatusCode(404);
+        }
+
+        $usuario = $this->request->usuario;
+        $vaga = $vagaModel->find($vaga_id);
+        $candidatoVaga = $candidatoVagaModel->where('candidato_id', $usuario['candidato_id'])->where('vaga_id', $vaga_id)->first();
+
+        if ($vaga['status'] != 'DISPONIVEL') {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Vaga não está disponível para candidatura!',
+            ])->setStatusCode(400);
+        }
+
+        if ($candidatoVaga) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Candidato já está cadastrado na vaga!',
+            ])->setStatusCode(400);
+        }
+
+        $dados = [
+            'candidato_id' => $usuario['candidato_id'],
+            'vaga_id' => $vaga_id,
+        ];
+        $candidatoVaga_id = $candidatoVagaModel->insert($dados);
+        $candidatoVaga = $candidatoVagaModel->find($candidatoVaga_id);
+        if (!$candidatoVaga) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Erro ao candidatar-se a vaga!',
+            ])->setStatusCode(500);
+        }
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => 'Candidato cadastrado na vaga com sucesso!',
+            'data' => $candidatoVaga,
         ]);
     }
 
@@ -168,6 +254,36 @@ class Vaga extends BaseController
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Vaga deletada com sucesso!',
+        ]);
+    }
+
+
+    public function cancelarCandidatura($vaga_id)
+    {
+        $candidatoVagaModel = model('CandidatoVagaModel');
+
+        $usuario = $this->request->usuario;
+        $candidatoVaga = $candidatoVagaModel->where('candidato_id', $usuario['candidato_id'])->where('vaga_id', $vaga_id)->first();
+
+        if ($candidatoVaga == null) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Candidatura não encontrada!',
+            ])->setStatusCode(404);
+        }
+
+
+        $result = $candidatoVagaModel->delete($candidatoVaga['id']);
+        if (!$result) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Erro ao cancelar candidatura!',
+            ])->setStatusCode(500);
+        }
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => 'Candidatura cancelada com sucesso!',
         ]);
     }
 }

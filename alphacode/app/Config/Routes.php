@@ -21,9 +21,12 @@ $routes->group('api', static function ($routes) {
     $routes->group('vaga', static function ($routes) {
         $routes->get('(:num)', 'Vaga::buscarVaga/$1', ['filter' => 'authenticate']);
         $routes->get('', 'Vaga::listarVagas', ['filter' => 'authenticate']);
+        $routes->get('candidaturas', 'Vaga::listarCandidaturas', ['filter' => 'candidatoAuthorizate']);
         $routes->post('', 'Vaga::criarVaga', ['filter' => 'authorizate']);
+        $routes->post('candidatar/(:num)', 'Vaga::candidatar/$1', ['filter' => 'candidatoAuthorizate']);
         $routes->put('(:num)', 'Vaga::editarVaga/$1', ['filter' => 'authorizate']);
         $routes->delete('', 'Vaga::deletarVagas', ['filter' => 'authorizate']);
+        $routes->delete('candidatar/(:num)', 'Vaga::cancelarCandidatura/$1', ['filter' => 'candidatoAuthorizate']);
     });
 
     $routes->group('usuario', static function ($routes) {

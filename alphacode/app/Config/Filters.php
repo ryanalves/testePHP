@@ -27,6 +27,7 @@ class Filters extends BaseConfig
         'authenticate'    => \App\Filters\AuthenticateFilter::class,
         'authorizate'    => \App\Filters\AuthorizateFilter::class,
         'adminAuthorizate'    => \App\Filters\AdminAuthorizateFilter::class,
+        'candidatoAuthorizate'    => \App\Filters\CandidatoAuthorizateFilter::class,
     ];
 
     /**
