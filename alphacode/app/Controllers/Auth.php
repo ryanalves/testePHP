@@ -25,7 +25,7 @@ class Auth extends BaseController
         );
 
         $iat = time();
-        $exp = $iat + 15;
+        $exp = $iat + 60 * 60 * 4;
         $payload = [
             "iat" => $iat,
             "exp" => $exp,
