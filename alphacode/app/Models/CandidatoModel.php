@@ -10,8 +10,6 @@ class CandidatoModel extends Model
 
     protected $allowedFields = [
         'nome',
-        'email',
-        'senha',
         'data_nascimento',
         'descricao'
     ];

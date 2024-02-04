@@ -3,6 +3,7 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use CodeIgniter\Database\RawSql;
 
 class DataBootstrap extends Migration
 {
@@ -16,7 +17,7 @@ class DataBootstrap extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'nome' => [
+            'user' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255'
             ],
@@ -28,8 +29,14 @@ class DataBootstrap extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '255'
             ],
+            'candidato_id' => [
+                'type' => 'INT',
+                'constraint' => 5,
+                'null' => true
+            ],
             'created_at' => [
-                'type' => 'DATETIME'
+                'type' => 'DATETIME',
+                'default' => new RawSql('CURRENT_TIMESTAMP'),
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
@@ -42,6 +49,7 @@ class DataBootstrap extends Migration
 
         ]);
         $this->forge->addKey('id', true);
+        $this->forge->addKey('candidato_id', false);
         $this->forge->createTable('usuarios');
 
         // Tabela de candidatos
@@ -56,14 +64,6 @@ class DataBootstrap extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '255'
             ],
-            'email' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255'
-            ],
-            'senha' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255'
-            ],
             'data_nascimento' => [
                 'type' => 'DATE'
             ],
@@ -71,7 +71,8 @@ class DataBootstrap extends Migration
                 'type' => 'TEXT'
             ],
             'created_at' => [
-                'type' => 'DATETIME'
+                'type' => 'DATETIME',
+                'default' => new RawSql('CURRENT_TIMESTAMP'),
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
@@ -120,7 +121,8 @@ class DataBootstrap extends Migration
                 'type' => 'TEXT'
             ],
             'created_at' => [
-                'type' => 'DATETIME'
+                'type' => 'DATETIME',
+                'default' => new RawSql('CURRENT_TIMESTAMP'),
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
@@ -152,7 +154,8 @@ class DataBootstrap extends Migration
                 'constraint' => 5,
             ],
             'created_at' => [
-                'type' => 'DATETIME'
+                'type' => 'DATETIME',
+                'default' => new RawSql('CURRENT_TIMESTAMP'),
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
