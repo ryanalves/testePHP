@@ -1,12 +1,10 @@
 
-# Teste de PHP
+## Teste de PHP
 
 Nome: Ryan Alves Martins
 
 Teste: teste-php-2 (vagas/candidatos)
-## Instalação
-
-#### Utilizando Docker
+### Instalação (Docker)
 iniciando o projeto
 ```bash
 docker network create alphacode-network
@@ -24,7 +22,7 @@ docker run -d \
   -e MYSQL_USER=alphacode \
   -e MYSQL_DATABASE=alphacode_teste \
   -e MYSQL_ROOT_PASSWORD=123456 \
-  -p 8001:3306 \
+  -p 3306:3306 \
   --network alphacode-network \
   -v alphacode_mysql_data:/bitnami/mysql \
   mysql:8.0.36-debian
@@ -37,7 +35,7 @@ docker run -d \
   --network alphacode-network \
   -e CODEIGNITER_PROJECT_NAME=alphacode \
   -e CODEIGNITER_PORT_NUMBER=8000 \
-  -e CODEIGNITER_DATABASE_HOST=mysql \
+  -e CODEIGNITER_DATABASE_HOST=alphacode-mysql \
   -e CODEIGNITER_DATABASE_PORT_NUMBER=3306 \
   -e CODEIGNITER_DATABASE_NAME=alphacode_teste \
   -e CODEIGNITER_DATABASE_USER=root \
@@ -47,7 +45,9 @@ docker run -d \
 ```
 
 ```bash
+docker exec -it alphacode-codeigniter bash -c "cd alphacode && composer install"
 docker exec -it alphacode-codeigniter bash -c "cd alphacode && php spark migrate"
+docker exec -it alphacode-codeigniter bash -c "cd alphacode && php spark db:seed BootstrapSeeder"
 ```
 
 parando o projeto
@@ -64,3 +64,7 @@ docker rm alphacode-codeigniter alphacode-mysql -v
 docker volume rm alphacode_mysql_data
 docker network rm alphacode-network
 ```
+
+### Acesso
+email: admin@mail.com
+senha: 123456

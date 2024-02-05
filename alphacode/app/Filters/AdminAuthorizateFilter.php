@@ -22,13 +22,14 @@ class AdminAuthorizateFilter implements FilterInterface
             $usuario = $usuarioModel->find($payload->id);
             $request->usuario = $usuario;
         }
-        
+
         if (!$usuario) {
             $response = service('response');
             $response->setJSON(['success' => false, 'message' => 'Acesso negado']);
             $response->setStatusCode(401);
             return $response;
         }
+
 
         if ($usuario["candidato_id"] !== null) {
             $response = service('response');

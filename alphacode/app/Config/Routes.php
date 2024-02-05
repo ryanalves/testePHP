@@ -12,26 +12,32 @@ use CodeIgniter\Router\RouteCollection;
 * authorizate - autoriazação de usuário comum
 * adminAuthorizate - autorização de usuário administrador
 */
+
+$routes->get('/', 'Home::index');
+$routes->get('/usuarios', 'Home::usuarios');
+$routes->get('/candidaturas', 'Home::candidaturas');
+$routes->get('login', 'Home::login');
+
 $routes->group('api', static function ($routes) {
     $routes->group('auth', static function ($routes) {
         $routes->get('', 'Auth::index', ['filter' => 'authorizate']);
-        $routes->post('signin', 'Auth::login');
+        $routes->post('login', 'Auth::login');
     });
 
     $routes->group('vaga', static function ($routes) {
-        $routes->get('(:num)', 'Vaga::buscarVaga/$1', ['filter' => 'authenticate']);
         $routes->get('', 'Vaga::listarVagas', ['filter' => 'authenticate']);
+        $routes->get('(:num)', 'Vaga::buscarVaga/$1', ['filter' => 'authenticate']);
         $routes->get('candidaturas', 'Vaga::listarCandidaturas', ['filter' => 'candidatoAuthorizate']);
-        $routes->post('', 'Vaga::criarVaga', ['filter' => 'authorizate']);
+        $routes->post('', 'Vaga::criarVaga', ['filter' => 'adminAuthorizate']);
         $routes->post('candidatar/(:num)', 'Vaga::candidatar/$1', ['filter' => 'candidatoAuthorizate']);
-        $routes->put('(:num)', 'Vaga::editarVaga/$1', ['filter' => 'authorizate']);
-        $routes->delete('', 'Vaga::deletarVagas', ['filter' => 'authorizate']);
+        $routes->put('(:num)', 'Vaga::editarVaga/$1', ['filter' => 'adminAuthorizate']);
+        $routes->delete('', 'Vaga::deletarVagas', ['filter' => 'adminAuthorizate']);
         $routes->delete('candidatar/(:num)', 'Vaga::cancelarCandidatura/$1', ['filter' => 'candidatoAuthorizate']);
     });
 
     $routes->group('usuario', static function ($routes) {
-        $routes->get('(:num)', 'Usuario::buscarUsuario/$1', ['filter' => 'adminAuthorizate']);
         $routes->get('', 'Usuario::listarUsuarios', ['filter' => 'adminAuthorizate']);
+        $routes->get('(:num)', 'Usuario::buscarUsuario/$1', ['filter' => 'adminAuthorizate']);
         $routes->post('', 'Usuario::criarUsuario', ['filter' => 'adminAuthorizate']);
         $routes->put('(:num)', 'Usuario::editarUsuario/$1', ['filter' => 'adminAuthorizate']);
         $routes->delete('', 'Usuario::deletarUsuarios', ['filter' => 'adminAuthorizate']);

@@ -1,0 +1,19 @@
+services:
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8002:80
+    networks:
+      - alphacode-network
+    environment:
+      - PMA_ARBITRARY=0
+      - PMA_HOST=alphacode-mysql
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=123456
+
+networks:
+  alphacode-network:
+    name: alphacode-network
+    external: true

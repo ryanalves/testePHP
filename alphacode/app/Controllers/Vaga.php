@@ -19,7 +19,7 @@ class Vaga extends BaseController
                 'message' => 'Vaga não encontrada!',
             ])->setStatusCode(404);
         }
-        
+
         $candidatosVaga = $candidatoVagaModel->where('vaga_id', $id)->findAll();
         $candidatosIds = [];
         foreach ($candidatosVaga as $candidatoVaga) {
@@ -40,10 +40,48 @@ class Vaga extends BaseController
     public function listarVagas()
     {
         $vagaModel = model('VagaModel');
-        $vagas = $vagaModel->findAll();
+
+        $skip = $this->request->getVar('start') ?? 0;
+        $limit = $this->request->getVar('length') ?? 20;
+        $search = $this->request->getVar('search');
+        if (isset($search)) {
+            $searchTerm = $this->request->getVar('search')['value'] ?? '';
+        }
+
+        $db = \Config\Database::connect();
+        $builder = $db->table('vagas');
+        $builder->where('deleted_at', null);
+        if (!empty($searchTerm)) {
+            $builder->orHavingLike('nome', $searchTerm);
+            $builder->orHavingLike('status', $searchTerm);
+            $builder->orHavingLike('tipo', $searchTerm);
+            $builder->orHavingLike('area', $searchTerm);
+            $builder->orHavingLike('descricao', $searchTerm);
+        }
+        if ($this->request->getVar('order')) {
+            $columns = [
+                'id',
+                'nome',
+                'tipo',
+                'status',
+                'area',
+                'pretensao',
+            ];
+            $columnId = $this->request->getVar('order')[0]['column'];
+            $column = $columns[$columnId];
+            $dir = $this->request->getVar('order')[0]['dir'];
+            $builder->orderBy($column, $dir);
+        }
+        $builder->limit($limit, $skip);
+        $query = $builder->get()->getResult();
+
+        $vagasTotal = $vagaModel->countAll();
+
         return $this->response->setJSON([
+            'recordsTotal' => $vagasTotal,
+            'recordsFiltered' => $vagasTotal,
             'success' => true,
-            'data' => $vagas,
+            'data' => $query,
         ]);
     }
 

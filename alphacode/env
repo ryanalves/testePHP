@@ -141,7 +141,7 @@
 #--------------------------------------------------------------------
 
 # curlrequest.shareOptions = false
-database.default.hostname=mysql
+database.default.hostname=alphacode-mysql
 database.default.port=3306
 database.default.database=alphacode_teste
 database.default.username=root

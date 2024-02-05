@@ -26,7 +26,7 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'mysql',
+        'hostname'     => 'alphacode-mysql',
         'username'     => 'root',
         'password'     => '123456',
         'database'     => 'alphacode_teste',

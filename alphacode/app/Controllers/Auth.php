@@ -23,6 +23,23 @@ class Auth extends BaseController
         $email = $this->request->getVar('email');
         $senha = $this->request->getVar('senha');
 
+        $dados = [
+            "email" => $email,
+            "senha" => $senha,
+        ];
+        $regras =  [
+            "email" => "required|valid_email",
+            "senha" => "required",
+        ];
+
+        if (!$this->validateData($dados, $regras)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Erro ao logar!',
+                'errors' => $this->validator->getErrors(),
+            ])->setStatusCode(400);
+        }
+
         $usuario = $usuarioModel->autenticar($email, $senha);
         if (!$usuario) {
             return $this->response->setJSON([

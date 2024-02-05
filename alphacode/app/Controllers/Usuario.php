@@ -24,11 +24,50 @@ class Usuario extends BaseController
 
     public function listarUsuarios()
     {
+
         $usuarioModel = model('UsuarioModel');
-        $usuarios = $usuarioModel->findAll();
+
+        $skip = $this->request->getVar('start') ?? 0;
+        $limit = $this->request->getVar('length') ?? 20;
+        $search = $this->request->getVar('search');
+        if (isset($search)) {
+            $searchTerm = $this->request->getVar('search')['value'] ?? '';
+        }
+
+        $db = \Config\Database::connect();
+        $builder = $db->table('usuarios');
+        $builder->join('candidatos', 'candidatos.id = usuarios.candidato_id', 'left');
+        $builder->where('usuarios.deleted_at', null);
+        if (!empty($searchTerm)) {
+            $builder->orHavingLike('user', $searchTerm);
+            $builder->orHavingLike('email', $searchTerm);
+            $builder->orLike('candidato_id', $searchTerm);
+        }
+        if ($this->request->getVar('order')) {
+            $columns = [
+                'usuarios.id',
+                'user',
+                'email',
+                'candidato_id',
+                'nome',
+                'data_nascimento',
+            ];
+            $columnId = $this->request->getVar('order')[0]['column'];
+            $column = $columns[$columnId];
+            $dir = $this->request->getVar('order')[0]['dir'];
+            $builder->orderBy($column, $dir);
+        }
+        $builder->limit($limit, $skip);
+        $builder->select('usuarios.id as id, user, email, candidato_id, nome, DATE_FORMAT(data_nascimento, "%d/%m/%Y") as data_nascimento');
+        $query = $builder->get()->getResult();
+
+        $usuariosTotal = $usuarioModel->countAll();
+
         return $this->response->setJSON([
+            'recordsTotal' => $usuariosTotal,
+            'recordsFiltered' => $usuariosTotal,
             'success' => true,
-            'data' => $usuarios,
+            'data' => $query,
         ]);
     }
 
