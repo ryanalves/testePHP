@@ -87,6 +87,17 @@ class Usuario extends BaseController
             'senha' => $this->request->getVar('senha')
         ];
 
+        $emailDuplicado = $usuarioModel->where('email', $dados['email'])->first();
+        if ($emailDuplicado != null) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Erro ao criar candidato!',
+                'errors' => [
+                    'email' => 'Email já cadastrado!'
+                ],
+            ])->setStatusCode(400);
+        }
+
         if (!$this->validateData($dados, $regras)) {
             return $this->response->setJSON([
                 'success' => false,
@@ -137,6 +148,8 @@ class Usuario extends BaseController
         $dadosUsuario = [];
         $regrasUsuario = [];
 
+
+
         // Campos e regras de validação (Usuario)
         $camposRegrasUsuario =  [
             'user' => 'required|max_length[255]',
@@ -150,6 +163,20 @@ class Usuario extends BaseController
             if ($valor) {
                 $regrasUsuario[$key] = $regra;
                 $dadosUsuario[$key] = $valor;
+            }
+        }
+
+
+        if ($dadosUsuario['email']) {
+            $emailDuplicado = $usuarioModel->where('email', $dadosUsuario['email'])->first();
+            if ($emailDuplicado != null && $emailDuplicado['id'] != $usuario_id) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Erro ao criar candidato!',
+                    'errors' => [
+                        'email' => 'Email já cadastrado!'
+                    ],
+                ])->setStatusCode(400);
             }
         }
 

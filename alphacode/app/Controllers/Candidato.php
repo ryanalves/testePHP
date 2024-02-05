@@ -55,6 +55,17 @@ class Candidato extends BaseController
             'descricao' => $this->request->getVar('descricao')
         ];
 
+        $emailDuplicado = $usuarioModel->where('email', $dados['email'])->first();
+        if ($emailDuplicado != null) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Erro ao criar candidato!',
+                'errors' => [
+                    'email' => 'Email já cadastrado!'
+                ],
+            ])->setStatusCode(400);
+        }
+
         if (!$this->validateData($dados, $regras)) {
             return $this->response->setJSON([
                 'success' => false,
@@ -165,6 +176,19 @@ class Candidato extends BaseController
             // Se a senha foi enviada, criptografa a senha
             if (isset($dadosUsuario['senha'])) {
                 $dadosUsuario['senha'] = md5($this->request->getVar('senha'));
+            }
+
+            if ($dadosUsuario['email']) {
+                $emailDuplicado = $usuarioModel->where('email', $dadosUsuario['email'])->first();
+                if ($emailDuplicado != null && $emailDuplicado['id'] != $usuario['id']) {
+                    return $this->response->setJSON([
+                        'success' => false,
+                        'message' => 'Erro ao criar candidato!',
+                        'errors' => [
+                            'email' => 'Email já cadastrado!'
+                        ],
+                    ])->setStatusCode(400);
+                }
             }
 
             if (!$usuarioModel->update($usuario["id"], $dadosUsuario)) {
