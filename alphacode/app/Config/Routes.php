@@ -16,7 +16,8 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('/usuarios', 'Home::usuarios');
 $routes->get('/candidaturas', 'Home::candidaturas');
-$routes->get('login', 'Home::login');
+$routes->get('/login', 'Home::login');
+$routes->get('/logout', 'Home::logout');
 
 $routes->group('api', static function ($routes) {
     $routes->group('auth', static function ($routes) {

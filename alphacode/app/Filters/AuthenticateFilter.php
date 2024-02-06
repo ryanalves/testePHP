@@ -10,10 +10,17 @@ class AuthenticateFilter implements FilterInterface
 {
 
     public function before(RequestInterface $request, $arguments = null)
-    { 
+    {
         helper('authentication');
+        helper('cookie');
+
         $header = $request->getHeader("Authorization");
         $token = extract_bearer_token($header);
+        if ($token == null) {
+            $token = get_cookie('token');
+        } else {
+            set_cookie('token', $token, 60 * 60 * 4); 
+        }
         $payload = decode_token($token);
 
         $usuario =  null;

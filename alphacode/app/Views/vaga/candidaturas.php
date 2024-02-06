@@ -36,13 +36,6 @@
 <?= $this->section('script') ?>
 <script>
   $(document).ready(async function() {
-    await usuario.then((response) => {
-      console.log(response);
-    }).catch(() => {
-      window.location.href = '<?= base_url('/login') ?>';
-    });
-
-
     $('#vagasTable').DataTable({
       ajax: {
         url: '<?= base_url('/api/vaga/candidaturas') ?>',

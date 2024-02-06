@@ -25,10 +25,6 @@
 <?= $this->section('script') ?>
 <script>
     $(document).ready(async function() {
-        await usuario.then((response) => {
-            window.location.href = '<?= base_url('/login') ?>';
-        }).catch(() => {});
-
         $('form').submit(function(e) {
             e.preventDefault();
             let email = $('#email').val();

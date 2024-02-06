@@ -15,39 +15,6 @@
 <body>
   <?= $this->renderSection('content') ?>
 </body>
-<script>
-  usuario = new Promise((resolve, reject) => {
-    $.ajax({
-      url: '<?= base_url('/api/auth') ?>',
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      },
-      success: function(response) {
-        console.log(response);
-        if (response.success) {
-          resolve(response.data);
-        } else {
-          reject(null);
-        }
-      },
-      error: function() {
-        reject(null);
-      }
-    });
-  });
-
-  usuario.then((usuario) => {
-    console.log(usuario);
-    if (usuario.candidato_id) {
-      document.querySelector("#usuariosItem").style.display = "none";
-      document.querySelector("#candidaturasItem").style.display = "block";
-    } else {
-      document.querySelector("#candidaturasItem").style.display = "none";
-      document.querySelector("#usuariosItem").style.display = "block";
-    }
-  }).catch(() => {});
-</script>
 
 <div style="display: none;"><?= $this->renderSection('templates') ?></div>
 <?= $this->renderSection('script') ?>

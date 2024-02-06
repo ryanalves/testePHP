@@ -22,6 +22,13 @@ class Home extends BaseController
         return view('login');
     }
 
+    public function logout()
+    {
+        helper('cookie');
+        delete_cookie('token');
+        return redirect('/');
+    }
+
     public function usuarios()
     {
         return view('usuario/index');

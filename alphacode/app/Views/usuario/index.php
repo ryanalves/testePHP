@@ -35,13 +35,6 @@
 <?= $this->section('script') ?>
 <script>
   $(document).ready(async function() {
-    await usuario.then((response) => {
-      console.log(response);
-    }).catch(() => {
-      window.location.href = '<?= base_url('/login') ?>';
-    });
-
-
     $('#usuariosTable').DataTable({
       serverSide: true,
       ajax: {

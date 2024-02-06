@@ -12,7 +12,7 @@ class Auth extends BaseController
         $usuario = $this->request->usuario ?? null;
         return $this->response->setJSON([
             "success" => true,
-            "data" => $usuario
+            "data" => $usuario,
         ]);
     }
 
@@ -58,10 +58,23 @@ class Auth extends BaseController
         ];
         $token = JWT::encode($payload, getenv('JWT_SECRET'), 'HS256');
 
+        helper('cookie');
+        set_cookie('token', $token, $exp);
+
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Login efetuado com sucesso!',
             'token' => $token,
+        ]);
+    }
+
+    function logout()
+    {
+        helper('cookie');
+        delete_cookie('token');
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => 'Logout efetuado com sucesso!',
         ]);
     }
 }
