@@ -17,7 +17,7 @@
         <th>Status</th>
         <th>Área</th>
         <th>Pretensão</th>
-        <th >Ações</th>
+        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -31,7 +31,7 @@
         <th>Status</th>
         <th>Área</th>
         <th>Pretensão</th>
-        <th >Ações</th>
+        <th>Ações</th>
       </tr>
     </tfoot>
   </table>
@@ -46,6 +46,22 @@ if (isset($usuario) && $usuario['candidato_id'] == null) {
 }
 ?>
 <script>
+  function deletarVaga(id) {
+    if (confirm('Deseja realmente deletar esta vaga?')) {
+      $.ajax({
+        url: `/api/vaga`,
+        type: 'DELETE',
+        data: JSON.stringify({
+          id: id
+        }),
+        processData: false,
+        contentType: 'application/json',
+        success: function() {
+          $('#vagasTable').DataTable().ajax.reload();
+        }
+      });
+    }
+  }
   $(document).ready(async function() {
     $('#vagasTable').DataTable({
       serverSide: true,
@@ -79,7 +95,7 @@ if (isset($usuario) && $usuario['candidato_id'] == null) {
             <?php if ($isAdmin) : ?>
               return `<a href="<?= base_url('/vagas/visualizar') ?>/${data}" class="btn btn-primary"><i class="bi bi-eye"></i></a>
               <a href="<?= base_url('/vagas/editar') ?>/${data}" class="btn btn-warning"><i class="bi bi-pencil"></i></a>
-              <a href="<?= base_url('/vagas/remover') ?>/${data}" class="btn btn-danger"><i class="bi bi-trash"></i></a>`;
+              <a onclick="deletarVaga(${data})" class="btn btn-danger"><i class="bi bi-trash"></i></a>`;
             <?php else : ?>
               return `<a href="<?= base_url('/vagas/visualizar') ?>/${data}" class="btn btn-primary"><i class="bi bi-eye"></i></a>`;
             <?php endif; ?>
