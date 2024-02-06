@@ -21,11 +21,14 @@ class AuthenticateFilter implements FilterInterface
         }
         $payload = decode_token($token);
 
-        
+
         $usuario =  null;
         if ($payload) {
             $usuarioModel = new \App\Models\UsuarioModel();
             $usuario = $usuarioModel->find($payload->id);
+            if ($usuario == null) {
+                delete_cookie('token');
+            }
             $request->usuario = $usuario;
         }
     }

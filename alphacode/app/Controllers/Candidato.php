@@ -252,6 +252,9 @@ class Candidato extends BaseController
         if (is_string($ids)) {
             $ids = explode(',', $ids);
         }
+        if(is_numeric($ids)){
+            $ids = [$ids];
+        }
         if (!is_array($ids)) {
             $ids = [$ids];
         }

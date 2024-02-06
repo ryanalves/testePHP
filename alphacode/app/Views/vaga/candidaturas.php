@@ -14,6 +14,7 @@
         <th>Status</th>
         <th>Área</th>
         <th>Pretensão</th>
+        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -27,6 +28,7 @@
         <th>Status</th>
         <th>Área</th>
         <th>Pretensão</th>
+        <th>Ações</th>
       </tr>
     </tfoot>
   </table>
@@ -38,7 +40,7 @@
   $(document).ready(async function() {
     $('#vagasTable').DataTable({
       ajax: {
-        url: '<?= base_url('/api/vagas/candidaturas') ?>',
+        url: '<?= base_url('/api/vaga/candidaturas') ?>',
         type: 'GET'
       },
       lengthMenu: [10, 20, 50, 100],
@@ -59,6 +61,13 @@
         },
         {
           data: 'pretensao'
+        }, {
+          data: 'id',
+          className: 'actions',
+          orderable: false,
+          render: function(data, type, row) {
+            return `<a href="<?= base_url('/vagas/visualizar') ?>/${data}" class="btn btn-primary"><i class="bi bi-eye"></i></a>`;
+          }
         }
       ]
     });

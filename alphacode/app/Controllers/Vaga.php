@@ -279,6 +279,9 @@ class Vaga extends BaseController
         if (is_string($ids)) {
             $ids = explode(',', $ids);
         }
+        if(is_numeric($ids)){
+            $ids = [$ids];
+        }
 
         $result = $vagaModel->delete($ids);
 

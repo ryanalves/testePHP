@@ -33,8 +33,18 @@
     }
   }
   ?>
-  <h2><?= $titulo ?></h2>
+  <div class="d-flex align-items-center justify-content-between">
+    <h2><?= $titulo ?></h2>
+    <?php if ($usuario['candidato_id'] != null) {
+      $candidaturaDisabled = $vaga['status'] != 'DISPONIVEL' ? 'disabled' : '';
+      if (isset($candidatura['id'])) {
+        echo "<button onclick='cancelarCandidatura()'  class='btn btn-danger'>Cancelar candidatura</button>";
+      } else {
+        echo "<button onclick='candidatar()' $candidaturaDisabled class='btn btn-primary'>Candidatar</button>";
+      }
+    } ?>
 
+  </div>
   <div class="p-4">
     <form>
       <input type="hidden" name="id" value="<?= $vaga['id'] ?>">
@@ -59,7 +69,7 @@
           <option disabled <?= $vaga['status'] == '' ? 'selected' : '' ?>>Selecione um status</option>
           <option value="DISPONIVEL" <?= $vaga['status'] == 'DISPONIVEL' ? 'selected' : '' ?>>Disponível</option>
           <option value="PAUSADO" <?= $vaga['status'] == 'PAUSADO' ? 'selected' : '' ?>>Pausado</option>
-          <option value="ENCERRADO" <?= $vaga['status'] == 'ENCERRADO' ? 'selected' : '' ?>>ENCERRADO</option>
+          <option value="ENCERRADO" <?= $vaga['status'] == 'ENCERRADO' ? 'selected' : '' ?>>Encerrado</option>
         </select>
       </div>
       <div class="mb-3">
@@ -86,6 +96,25 @@
 
 <?= $this->section('script') ?>
 <script>
+  function candidatar() {
+    $.ajax({
+      url: `/api/vaga/candidatar/<?= $vaga['id'] ?>`,
+      type: 'POST',
+      success: function() {
+        location.reload();
+      }
+    });
+  }
+
+  function cancelarCandidatura() {
+    $.ajax({
+      url: `/api/vaga/candidatar/<?= $vaga['id'] ?>`,
+      type: 'DELETE',
+      success: function() {
+        location.reload();
+      }
+    });
+  }
   $(document).ready(async function() {
     $('form').submit(function(event) {
       event.preventDefault();
@@ -102,19 +131,19 @@
           processData: false,
           contentType: 'application/json',
           success: function(response) {
-            window.location.href = '<?= base_url('/vaga') ?>';
+            window.location.href = '<?= base_url('/') ?>';
             console.log(response);
           }
         });
       <?php else : ?>
         $.ajax({
-          url: '<?= base_url('/api/vagas/' . $vaga['id']) ?>',
+          url: '<?= base_url('/api/vaga/' . $vaga['id']) ?>',
           type: 'PUT',
           data: JSON.stringify(data),
           processData: false,
           contentType: 'application/json',
           success: function(response) {
-            window.location.href = '<?= base_url('/vaga') ?>';
+            window.location.href = '<?= base_url('/') ?>';
             console.log(response);
           }
         });
