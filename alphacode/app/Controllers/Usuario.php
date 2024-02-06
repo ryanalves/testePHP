@@ -35,6 +35,11 @@ class Usuario extends BaseController
         }
 
         $db = \Config\Database::connect();
+
+        $builder = $db->table('usuarios');
+        $builder->where('usuarios.deleted_at', null);
+        $usuariosTotal = $builder->get()->getNumRows();
+
         $builder = $db->table('usuarios');
         $builder->join('candidatos', 'candidatos.id = usuarios.candidato_id', 'left');
         $builder->where('usuarios.deleted_at', null);
@@ -61,7 +66,6 @@ class Usuario extends BaseController
         $builder->select('usuarios.id as id, user, email, candidato_id, nome, DATE_FORMAT(data_nascimento, "%d/%m/%Y") as data_nascimento');
         $query = $builder->get()->getResult();
 
-        $usuariosTotal = $usuarioModel->countAll();
 
         return $this->response->setJSON([
             'recordsTotal' => $usuariosTotal,

@@ -5,7 +5,10 @@
 <div class="p-4">
   <div class="d-flex align-items-center justify-content-between">
     <h2>Usuarios</h2>
-    <a href="/usuarios/criar" class="btn btn-primary">Criar usuário</a>
+    <div>
+      <button class="btn btn-danger" id="deletarUsuarios" onclick="deletarEmMassa()">Deletar em massa</button>
+      <a href="/usuarios/criar" class="btn btn-primary">Criar usuário</a>
+    </div>
   </div>
 
   <table id="usuariosTable" class="table table-striped" style="width:100%">
@@ -61,7 +64,43 @@ if (isset($usuario) && $usuario['candidato_id'] == null) {
       });
     }
   }
+  let ids = [];
+
+  function deletarEmMassa() {
+    if (confirm('Deseja realmente deletar estes usuários?')) {
+      $.ajax({
+        url: `/api/usuario`,
+        type: 'DELETE',
+        data: JSON.stringify({
+          id: ids
+        }),
+        processData: false,
+        contentType: 'application/json',
+        success: function() {
+          $('#usuariosTable').DataTable().ajax.reload();
+          ids = [];
+          $('#deletarUsuarios').hide();
+        }
+      });
+    }
+  }
+
   $(document).ready(async function() {
+    $('#deletarUsuarios').hide();
+    $('#usuariosTable').on('click', '.usuario-check', function() {
+      const isChecked = $(this).is(':checked');
+      const value = $(this).val();
+      if (isChecked) {
+        ids.push(value);
+      } else {
+        ids = ids.filter(id => id != value);
+      }
+      if (ids.length > 0) {
+        $('#deletarUsuarios').show();
+      } else {
+        $('#deletarUsuarios').hide();
+      }
+    });
     $('#usuariosTable').DataTable({
       serverSide: true,
       ajax: {
@@ -70,7 +109,18 @@ if (isset($usuario) && $usuario['candidato_id'] == null) {
       },
       lengthMenu: [10, 20, 50, 100],
       columns: [{
-          data: 'id'
+          data: 'id',
+          render: function(data, type, row) {
+            <?php if ($isAdmin) : ?>
+              let checked = '';
+              if (ids.includes(data)) {
+                checked = 'checked';
+              }
+              return '<input type="checkbox" class="usuario-check form-check-input" name="usuario_id" ' + checked + ' value="' + data + '">' + data;
+            <?php else : ?>
+              return data;
+            <?php endif; ?>
+          }
         },
         {
           data: 'user'

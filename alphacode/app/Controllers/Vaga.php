@@ -51,6 +51,10 @@ class Vaga extends BaseController
         $db = \Config\Database::connect();
         $builder = $db->table('vagas');
         $builder->where('deleted_at', null);
+        $vagasTotal = $builder->get()->getNumRows();
+
+        $builder = $db->table('vagas');
+        $builder->where('deleted_at', null);
         if (!empty($searchTerm)) {
             $builder->orHavingLike('nome', $searchTerm);
             $builder->orHavingLike('status', $searchTerm);
@@ -72,10 +76,9 @@ class Vaga extends BaseController
             $dir = $this->request->getVar('order')[0]['dir'];
             $builder->orderBy($column, $dir);
         }
+
         $builder->limit($limit, $skip);
         $query = $builder->get()->getResult();
-
-        $vagasTotal = $vagaModel->countAll();
 
         return $this->response->setJSON([
             'recordsTotal' => $vagasTotal,
@@ -97,7 +100,7 @@ class Vaga extends BaseController
         foreach ($candidatoVagas as $candidatoVaga) {
             $vagasIds[] = $candidatoVaga['vaga_id'];
         }
-        if(sizeof($vagasIds) > 0) {
+        if (sizeof($vagasIds) > 0) {
             $vagas = $vagasModel->find($vagasIds);
         } else {
             $vagas = [];
@@ -283,7 +286,7 @@ class Vaga extends BaseController
         if (is_string($ids)) {
             $ids = explode(',', $ids);
         }
-        if(is_numeric($ids)){
+        if (is_numeric($ids)) {
             $ids = [$ids];
         }
 

@@ -5,7 +5,10 @@
 <div class="p-4">
   <div class="d-flex align-items-center justify-content-between">
     <h2>Vagas</h2>
-    <a href="/vagas/criar" class="btn btn-primary">Criar vaga</a>
+    <div>
+      <button class="btn btn-danger" id="deletarVagas" onclick="deletarEmMassa()">Deletar em massa</button>
+      <a href="/vagas/criar" class="btn btn-primary">Criar vaga</a>
+    </div>
   </div>
 
   <table id="vagasTable" class="table table-striped" style="width:100%">
@@ -62,7 +65,43 @@ if (isset($usuario) && $usuario['candidato_id'] == null) {
       });
     }
   }
+  let ids = [];
+
+  function deletarEmMassa() {
+    if (confirm('Deseja realmente deletar estas vagas?')) {
+      $.ajax({
+        url: `/api/vaga`,
+        type: 'DELETE',
+        data: JSON.stringify({
+          id: ids
+        }),
+        processData: false,
+        contentType: 'application/json',
+        success: function() {
+          $('#vagasTable').DataTable().ajax.reload();
+          ids = [];
+          $('#deletarVagas').hide();
+        }
+      });
+    }
+  }
   $(document).ready(async function() {
+    $('#deletarVagas').hide();
+    $('#vagasTable').on('click', '.vaga-check', function() {
+      const isChecked = $(this).is(':checked');
+      const value = $(this).val();
+      if (isChecked) {
+        ids.push(value);
+      } else {
+        ids = ids.filter(id => id != value);
+      }
+      if (ids.length > 0) {
+        $('#deletarVagas').show();
+      } else {
+        $('#deletarVagas').hide();
+      }
+    });
+
     $('#vagasTable').DataTable({
       serverSide: true,
       ajax: {
@@ -71,7 +110,18 @@ if (isset($usuario) && $usuario['candidato_id'] == null) {
       },
       lengthMenu: [10, 20, 50, 100],
       columns: [{
-          data: 'id'
+          data: 'id',
+          render: function(data, type, row) {
+            <?php if ($isAdmin) : ?>
+              let checked = '';
+              if (ids.includes(data)) {
+                checked = 'checked';
+              }
+              return '<input type="checkbox" class="vaga-check form-check-input" name="vaga_id" ' + checked + ' value="' + data + '">' + data;
+            <?php else : ?>
+              return data;
+            <?php endif; ?>
+          }
         },
         {
           data: 'nome'
