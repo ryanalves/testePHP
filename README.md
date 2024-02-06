@@ -65,6 +65,9 @@ docker volume rm alphacode_mysql_data
 docker network rm alphacode-network
 ```
 
+### Postman
+Está disponível um postman_collection com todas as rotas de API da aplicação
+
 ### Acesso
 localhost:8000
 
