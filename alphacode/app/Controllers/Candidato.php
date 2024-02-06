@@ -34,6 +34,7 @@ class Candidato extends BaseController
 
     public function criarCandidato()
     {
+        helper('toast');
         $usuarioModel = model('UsuarioModel');
         $candidatoModel = model('CandidatoModel');
 
@@ -86,12 +87,14 @@ class Candidato extends BaseController
         $candidato['usuario'] = $usuarioModel->find($usuario_id);
 
         if (!$candidato) {
+            set_toast('danger', 'Erro', 'Erro ao criar candidato');
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Erro ao criar candidato!',
             ])->setStatusCode(500);
         }
 
+        set_toast('success', 'Sucesso', 'Candidato criado com sucesso');
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Candidato criada com sucesso!',
@@ -113,6 +116,7 @@ class Candidato extends BaseController
 
     public function editarCandidatoPorId($candidato_id)
     {
+        helper('toast');
         $usuarioModel = model('UsuarioModel');
         $candidatoModel = model('CandidatoModel');
 
@@ -192,6 +196,7 @@ class Candidato extends BaseController
             }
 
             if (!$usuarioModel->update($usuario["id"], $dadosUsuario)) {
+                set_toast('danger', 'Erro', 'Erro ao editar usuario');
                 return $this->response->setJSON([
                     'success' => false,
                     'message' => 'Erro ao editar usuario!',
@@ -201,6 +206,7 @@ class Candidato extends BaseController
 
         if ($candidato != null && sizeof($dadosCandidato) > 0) { // Se o usuario for um candidato
             if (!$this->validateData($dadosCandidato, $regrasCandidato)) {
+                set_toast('danger', 'Erro', 'Erro ao editar candidato');
                 return $this->response->setJSON([
                     'success' => false,
                     'message' => 'Erro ao editar candidato!',
@@ -208,6 +214,7 @@ class Candidato extends BaseController
                 ])->setStatusCode(400);
             }
             if (!$candidatoModel->update($candidato["id"], $dadosCandidato)) {
+                set_toast('danger', 'Erro', 'Erro ao editar candidato');
                 return $this->response->setJSON([
                     'success' => false,
                     'message' => 'Erro ao editar candidato!',
@@ -216,6 +223,7 @@ class Candidato extends BaseController
         }
 
         if (sizeof($dadosUsuario) == 0 && sizeof($dadosCandidato) == 0) {
+            set_toast('danger', 'Erro', 'Nenhum dado enviado para edição');
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Nenhum dado enviado para edição!',
@@ -226,6 +234,7 @@ class Candidato extends BaseController
         $usuario = $usuarioModel->where("candidato_id", $candidato['id'])->first();
         $candidato['usuario'] = $usuario;
 
+        set_toast('success', 'Sucesso', 'Candidato editado com sucesso');
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Candidato editada com sucesso!',

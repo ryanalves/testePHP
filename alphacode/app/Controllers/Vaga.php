@@ -114,6 +114,7 @@ class Vaga extends BaseController
 
     public function criarVaga()
     {
+        helper('toast');
         $vagaModel = model('VagaModel');
 
         $regras = [
@@ -141,12 +142,14 @@ class Vaga extends BaseController
         $vaga_id = $vagaModel->insert($dados);
         $vaga = $vagaModel->find($vaga_id);
         if (!$vaga) {
+            set_toast('danger', 'Erro', 'Erro ao criar vaga!');
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Erro ao criar vaga!',
             ])->setStatusCode(500);
         }
 
+        set_toast('success', 'Sucesso', 'Vaga criada com sucesso!');
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Vaga criada com sucesso!',
@@ -156,6 +159,7 @@ class Vaga extends BaseController
 
     public function candidatar($vaga_id)
     {
+        helper('toast');
         $vagaModel = model('VagaModel');
         $candidatoVagaModel = model('CandidatoVagaModel');
 
@@ -192,12 +196,14 @@ class Vaga extends BaseController
         $candidatoVaga_id = $candidatoVagaModel->insert($dados);
         $candidatoVaga = $candidatoVagaModel->find($candidatoVaga_id);
         if (!$candidatoVaga) {
+            set_toast('danger', 'Erro', 'Erro ao candidatar-se a vaga!');
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Erro ao candidatar-se a vaga!',
             ])->setStatusCode(500);
         }
 
+        set_toast('success', 'Sucesso', 'Candidatura cadastrada com sucesso!');
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Candidato cadastrado na vaga com sucesso!',
@@ -207,6 +213,7 @@ class Vaga extends BaseController
 
     public function editarVaga($vaga_id)
     {
+        helper('toast');
         $vagaModel = model('VagaModel');
 
         $vaga = $vagaModel->find($vaga_id);
@@ -254,6 +261,7 @@ class Vaga extends BaseController
         }
 
         if (!$vagaModel->update($vaga_id, $dados)) {
+            set_toast('danger', 'Erro', 'Erro ao editar vaga!');
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Erro ao editar vaga!',
@@ -261,6 +269,7 @@ class Vaga extends BaseController
         }
 
         $vaga = $vagaModel->find($vaga_id);
+        set_toast('success', 'Sucesso', 'Vaga editada com sucesso!');
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Vaga editada com sucesso!',
@@ -308,6 +317,7 @@ class Vaga extends BaseController
 
     public function cancelarCandidatura($vaga_id)
     {
+        helper('toast');
         $candidatoVagaModel = model('CandidatoVagaModel');
 
         $usuario = $this->request->usuario;
@@ -323,12 +333,14 @@ class Vaga extends BaseController
 
         $result = $candidatoVagaModel->delete($candidatoVaga['id']);
         if (!$result) {
+            set_toast('danger', 'Erro', 'Erro ao cancelar candidatura!');
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Erro ao cancelar candidatura!',
             ])->setStatusCode(500);
         }
 
+        set_toast('success', 'Sucesso', 'Candidatura cancelada com sucesso!');
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Candidatura cancelada com sucesso!',

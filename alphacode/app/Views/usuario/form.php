@@ -44,7 +44,7 @@
       </div>
       <div class="mb-3">
         <label for="senha" class="form-label">Senha</label>
-        <input type="password" class="form-control" id="senha" name="senha" <?= (isset($model['id']) ) ? '' : 'required' ?> <?= $disabled ?>>
+        <input type="password" class="form-control" id="senha" name="senha" <?= (isset($model['id'])) ? '' : 'required' ?> <?= $disabled ?>>
       </div>
 
 
@@ -78,9 +78,12 @@
 <?= $this->section('script') ?>
 <script>
   $(document).ready(async function() {
-    $('#nome').prop('disabled', true);
-    $('#data_nascimento').prop('disabled', true);
-    $('#descricao').prop('disabled', true);
+    const isChecked = $('#candidato_id').is(':checked');
+    if (!isChecked) {
+      $('#nome').prop('disabled', true);
+      $('#data_nascimento').prop('disabled', true);
+      $('#descricao').prop('disabled', true);
+    }
     $('#candidato_id').change(function() {
       const isChecked = $(this).is(':checked');
       $('#nome').prop('disabled', !isChecked);

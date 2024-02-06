@@ -77,6 +77,7 @@ class Usuario extends BaseController
 
     public function criarUsuario()
     {
+        helper('toast');
         $usuarioModel = model('UsuarioModel');
 
         $regras = [
@@ -118,12 +119,14 @@ class Usuario extends BaseController
         $usuario_id = $usuarioModel->insert($dados);
         $usuario = $usuarioModel->find($usuario_id);
         if (!$usuario) {
+            set_toast('danger', 'Erro', 'Erro ao criar usuario!');
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Erro ao criar usuario!',
             ])->setStatusCode(500);
         }
 
+        set_toast('success', 'Sucesso', 'Usuario criado com sucesso!');
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Usuario criada com sucesso!',
@@ -133,6 +136,7 @@ class Usuario extends BaseController
 
     public function editarUsuario($usuario_id)
     {
+        helper('toast');
         $usuarioModel = model('UsuarioModel');
         $candidatoModel = model('CandidatoModel');
 
@@ -227,6 +231,7 @@ class Usuario extends BaseController
 
         if ($candidato != null && sizeof($dadosCandidato) > 0) { // Se o usuario for um candidato
             if (!$this->validateData($dadosCandidato, $regrasCandidato)) {
+                set_toast('danger', 'Erro', 'Erro ao editar candidato!');
                 return $this->response->setJSON([
                     'success' => false,
                     'message' => 'Erro ao editar candidato!',
@@ -234,6 +239,7 @@ class Usuario extends BaseController
                 ])->setStatusCode(400);
             }
             if (!$candidatoModel->update($candidato["id"], $dadosCandidato)) {
+                set_toast('danger', 'Erro', 'Erro ao editar candidato!');
                 return $this->response->setJSON([
                     'success' => false,
                     'message' => 'Erro ao editar candidato!',
@@ -242,6 +248,7 @@ class Usuario extends BaseController
         }
 
         if (sizeof($dadosUsuario) == 0 && sizeof($dadosCandidato) == 0) {
+            set_toast('secondary', 'Info', 'Nenhum dado enviado para edição!');
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Nenhum dado enviado para edição!',
@@ -254,6 +261,7 @@ class Usuario extends BaseController
             $usuario['candidato'] = $candidato;
         }
 
+        set_toast('success', 'Sucesso', 'Usuario editado com sucesso!');
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Usuario editada com sucesso!',

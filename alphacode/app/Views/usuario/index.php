@@ -60,6 +60,10 @@ if (isset($usuario) && $usuario['candidato_id'] == null) {
         contentType: 'application/json',
         success: function() {
           $('#usuariosTable').DataTable().ajax.reload();
+          showToast('success', 'Sucesso', 'Usuário deletado com sucesso');
+        },
+        error: function() {
+          showToast('danger', 'Erro', 'Erro ao deletar usuário');
         }
       });
     }
@@ -80,6 +84,10 @@ if (isset($usuario) && $usuario['candidato_id'] == null) {
           $('#usuariosTable').DataTable().ajax.reload();
           ids = [];
           $('#deletarUsuarios').hide();
+          showToast('success', 'Sucesso', 'Usuários deletados com sucesso');
+        },
+        error: function() {
+          showToast('danger', 'Erro', 'Erro ao deletar usuários');
         }
       });
     }

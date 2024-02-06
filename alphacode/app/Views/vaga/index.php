@@ -61,6 +61,10 @@ if (isset($usuario) && $usuario['candidato_id'] == null) {
         contentType: 'application/json',
         success: function() {
           $('#vagasTable').DataTable().ajax.reload();
+          showToast('success', 'Sucesso', 'Vaga deletada com sucesso');
+        },
+        error: function() {
+          showToast('danger', 'Erro', 'Erro ao deletar vaga');
         }
       });
     }
@@ -81,6 +85,10 @@ if (isset($usuario) && $usuario['candidato_id'] == null) {
           $('#vagasTable').DataTable().ajax.reload();
           ids = [];
           $('#deletarVagas').hide();
+          showToast('success', 'Sucesso', 'Vagas deletadas com sucesso');
+        },
+        error: function() {
+          showToast('danger', 'Erro', 'Erro ao deletar vagas');
         }
       });
     }
