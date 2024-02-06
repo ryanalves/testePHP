@@ -97,7 +97,11 @@ class Vaga extends BaseController
         foreach ($candidatoVagas as $candidatoVaga) {
             $vagasIds[] = $candidatoVaga['vaga_id'];
         }
-        $vagas = $vagasModel->find($vagasIds);
+        if(sizeof($vagasIds) > 0) {
+            $vagas = $vagasModel->find($vagasIds);
+        } else {
+            $vagas = [];
+        }
 
         return $this->response->setJSON([
             'success' => true,

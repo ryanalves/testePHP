@@ -35,10 +35,10 @@
   ?>
   <div class="d-flex align-items-center justify-content-between">
     <h2><?= $titulo ?></h2>
-    <?php if ($usuario['candidato_id'] != null) {
+    <?php if (isset($usuario['candidato_id'] )) {
       $candidaturaDisabled = $vaga['status'] != 'DISPONIVEL' ? 'disabled' : '';
       if (isset($candidatura['id'])) {
-        echo "<button onclick='cancelarCandidatura()'  class='btn btn-danger'>Cancelar candidatura</button>";
+        echo "<button onclick='cancelarCandidatura()' class='btn btn-danger'>Cancelar candidatura</button>";
       } else {
         echo "<button onclick='candidatar()' $candidaturaDisabled class='btn btn-primary'>Candidatar</button>";
       }
@@ -90,8 +90,34 @@
     </form>
   </div>
 
+  <?php if (isset($candidatos)) : ?>
+    <h2>Candidaturas</h2>
+
+    <table id="candidatosTable" class="table table-striped" style="width:100%">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nome</th>
+          <th>Data de Nascimento</th>
+          <th>Descrição</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>#</th>
+          <th>Nome</th>
+          <th>Data de Nascimento</th>
+          <th>Descrição</th>
+          <th>Ações</th>
+        </tr>
+      </tfoot>
+    </table>
 </div>
-</div>
+<?php endif; ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('script') ?>
@@ -116,6 +142,39 @@
     });
   }
   $(document).ready(async function() {
+    <?php if (isset($candidatos)) : ?>
+      $('#candidatosTable').DataTable({
+        data: <?= json_encode($candidatos) ?>,
+        lengthMenu: [10, 20, 50, 100],
+        columns: [{
+            data: 'id'
+          },
+          {
+            data: 'nome'
+          },
+          {
+            data: 'data_nascimento'
+          },
+          {
+            data: 'descricao'
+          },
+          {
+            data: 'usuario.id',
+            className: 'actions',
+            orderable: false,
+            render: function(data, type, row) {
+              <?php if (!isset($usuario['candidato_id'] )) : ?>
+                return `<a href="<?= base_url('/usuarios/visualizar') ?>/${data}" class="btn btn-primary"><i class="bi bi-eye"></i></a>`;
+              <?php else : ?>
+                return ``;
+              <?php endif; ?>
+
+            }
+          }
+        ]
+      });
+    <?php endif; ?>
+
     $('form').submit(function(event) {
       event.preventDefault();
       let data = $(this).serializeArray().reduce(function(obj, item) {
@@ -132,7 +191,6 @@
           contentType: 'application/json',
           success: function(response) {
             window.location.href = '<?= base_url('/') ?>';
-            console.log(response);
           }
         });
       <?php else : ?>
@@ -144,7 +202,6 @@
           contentType: 'application/json',
           success: function(response) {
             window.location.href = '<?= base_url('/') ?>';
-            console.log(response);
           }
         });
       <?php endif; ?>

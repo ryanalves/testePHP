@@ -93,7 +93,6 @@
         obj[item.name] = item.value;
         return obj;
       }, {});
-      console.log(data);
       <?php if ($model['id'] == null) : ?>
 
         const isCandidato = $('#candidato_id').is(':checked');
@@ -106,7 +105,6 @@
             contentType: 'application/json',
             success: function(response) {
               window.location.href = '<?= base_url('/usuarios') ?>';
-              console.log(response);
             },
             error: function(response) {
               const res = response.responseJSON;
@@ -126,7 +124,6 @@
             contentType: 'application/json',
             success: function(response) {
               window.location.href = '<?= base_url('/usuarios') ?>';
-              console.log(response);
             },
             error: function(response) {
               const res = response.responseJSON;
@@ -148,7 +145,6 @@
           contentType: 'application/json',
           success: function(response) {
             window.location.href = '<?= base_url('/usuarios') ?>';
-            console.log(response);
           }
         });
       <?php endif; ?>

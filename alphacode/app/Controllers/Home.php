@@ -38,19 +38,38 @@ class Home extends BaseController
     public function visualizarVaga($id)
     {
         $usuario = $this->request->usuario ?? null;
+        $usuarioModel = model('UsuarioModel');
         $vagaModel = model('VagaModel');
+        $candidatoVagaModel = model('CandidatoVagaModel');
+        $candidatoModel = model('CandidatoModel');
         $vaga = $vagaModel->find($id);
         $candidatura = null;
-        if ($usuario['candidato_id'] != null) {
-            $candidatoModel = model('CandidatoModel');
+        if (isset($usuario['candidato_id'])) {
             $candidato = $candidatoModel->find($usuario['candidato_id']);
-            $CandidatoVagaModel = model('CandidatoVagaModel');
-            $candidatura = $CandidatoVagaModel->where('candidato_id', $candidato['id'])->where('vaga_id', $vaga['id'])->first();
+            $candidatura = $candidatoVagaModel->where('candidato_id', $candidato['id'])->where('vaga_id', $vaga['id'])->first();
         }
+
+
+        $candidatosVaga = $candidatoVagaModel->where('vaga_id', $id)->findAll();
+        $candidatosIds = [];
+        foreach ($candidatosVaga as $candidatoVaga) {
+            $candidatosIds[] = $candidatoVaga['candidato_id'];
+        }
+        $candidatos = [];
+        if (sizeof($candidatosIds) > 0) {
+            $candidatos = $candidatoModel->find($candidatosIds);
+            $candidatosCount = count($candidatos);
+            for ($i = 0; $i < $candidatosCount; $i++) {
+                $_usuario = $usuarioModel->where('candidato_id', $candidatos[$i]['id'])->first();
+                $candidatos[$i]['usuario'] = $_usuario;
+            }
+        }
+
         return view('vaga/form', [
             'usuario' => $usuario,
             'vaga' => $vaga,
             'candidatura' => $candidatura,
+            'candidatos' => $candidatos,
             'visualizar' => true
         ]);
     }
