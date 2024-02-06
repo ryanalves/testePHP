@@ -38,10 +38,7 @@
   $(document).ready(async function() {
     $('#vagasTable').DataTable({
       ajax: {
-        url: '<?= base_url('/api/vaga/candidaturas') ?>',
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('token')
-        },
+        url: '<?= base_url('/api/vagas/candidaturas') ?>',
         type: 'GET'
       },
       lengthMenu: [10, 20, 50, 100],

@@ -13,11 +13,20 @@ use CodeIgniter\Router\RouteCollection;
 * adminAuthorizate - autorização de usuário administrador
 */
 
-$routes->get('/', 'Home::index');
-$routes->get('/usuarios', 'Home::usuarios');
-$routes->get('/candidaturas', 'Home::candidaturas');
 $routes->get('/login', 'Home::login');
 $routes->get('/logout', 'Home::logout');
+
+$routes->get('/', 'Home::vagas');
+$routes->get('/vagas/criar', 'Home::criarVaga', ['filter' => 'adminAuthorizate']);
+$routes->get('/vagas/visualizar/(:num)', 'Home::visualizarVaga/$1');
+$routes->get('/vagas/editar/(:num)', 'Home::editarVaga/$1', ['filter' => 'adminAuthorizate']);
+
+$routes->get('/usuarios', 'Home::usuarios', ['filter' => 'adminAuthorizate']);
+$routes->get('/usuarios/criar', 'Home::criarUsuario', ['filter' => 'adminAuthorizate']);
+$routes->get('/usuarios/visualizar/(:num)', 'Home::visualizarUsuario/$1');
+$routes->get('/usuarios/editar/(:num)', 'Home::editarUsuario/$1', ['filter' => 'adminAuthorizate']);
+
+$routes->get('/candidaturas', 'Home::candidaturas', ['filter' => 'candidatoAuthorizate']);
 
 $routes->group('api', static function ($routes) {
     $routes->group('auth', static function ($routes) {
@@ -26,8 +35,8 @@ $routes->group('api', static function ($routes) {
     });
 
     $routes->group('vaga', static function ($routes) {
-        $routes->get('', 'Vaga::listarVagas', ['filter' => 'authenticate']);
-        $routes->get('(:num)', 'Vaga::buscarVaga/$1', ['filter' => 'authenticate']);
+        $routes->get('', 'Vaga::listarVagas');
+        $routes->get('(:num)', 'Vaga::buscarVaga/$1');
         $routes->get('candidaturas', 'Vaga::listarCandidaturas', ['filter' => 'candidatoAuthorizate']);
         $routes->post('', 'Vaga::criarVaga', ['filter' => 'adminAuthorizate']);
         $routes->post('candidatar/(:num)', 'Vaga::candidatar/$1', ['filter' => 'candidatoAuthorizate']);

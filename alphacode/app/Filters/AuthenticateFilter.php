@@ -18,11 +18,10 @@ class AuthenticateFilter implements FilterInterface
         $token = extract_bearer_token($header);
         if ($token == null) {
             $token = get_cookie('token');
-        } else {
-            set_cookie('token', $token, 60 * 60 * 4); 
         }
         $payload = decode_token($token);
 
+        
         $usuario =  null;
         if ($payload) {
             $usuarioModel = new \App\Models\UsuarioModel();

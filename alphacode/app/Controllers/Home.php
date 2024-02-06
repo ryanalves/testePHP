@@ -7,16 +7,7 @@ use Firebase\JWT\JWT;
 
 class Home extends BaseController
 {
-    public function index()
-    {
-        return view('vaga/index');
-    }
-    
-    public function candidaturas()
-    {
-        return view('vaga/candidaturas');
-    }
-    
+
     public function login()
     {
         return view('login');
@@ -26,11 +17,57 @@ class Home extends BaseController
     {
         helper('cookie');
         delete_cookie('token');
-        return redirect('/');
+        return view('logout');
+    }
+
+    public function vagas()
+    {
+        $usuario = $this->request->usuario ?? null;
+        return view('vaga/index', ['usuario' => $usuario, 'route' => 'vagas']);
+    }
+
+    public function criarVaga()
+    {
+        $usuario = $this->request->usuario ?? null;
+        return view('vaga/form', [
+            'usuario' => $usuario,
+
+        ]);
+    }
+
+    public function visualizarVaga($id)
+    {
+        $usuario = $this->request->usuario ?? null;
+        $vagaModel = model('VagaModel');
+        $vaga = $vagaModel->find($id);
+        return view('vaga/form', [
+            'usuario' => $usuario,
+            'vaga' => $vaga,
+            'visualizar' => true
+        ]);
+    }
+
+    public function editarVaga($id)
+    {
+        $usuario = $this->request->usuario ?? null;
+        $vagaModel = model('VagaModel');
+        $vaga = $vagaModel->find($id);
+        return view('vaga/form', [
+            'usuario' => $usuario,
+            'vaga' => $vaga,
+        ]);
+    }
+
+
+    public function candidaturas()
+    {
+        $usuario = $this->request->usuario ?? null;
+        return view('vaga/candidaturas', ['usuario' => $usuario, 'route' => 'candidaturas']);
     }
 
     public function usuarios()
     {
-        return view('usuario/index');
+        $usuario = $this->request->usuario ?? null;
+        return view('usuario/index', ['usuario' => $usuario, 'route' => 'usuarios']);
     }
 }

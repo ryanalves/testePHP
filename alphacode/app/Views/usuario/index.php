@@ -39,9 +39,6 @@
       serverSide: true,
       ajax: {
         url: '<?= base_url('/api/usuario') ?>',
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('token')
-        },
         type: 'GET'
       },
       lengthMenu: [10, 20, 50, 100],

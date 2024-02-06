@@ -38,7 +38,6 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        localStorage.setItem('token', response.token);
                         window.location.href = '<?= base_url('/') ?>';
                     }
                 },

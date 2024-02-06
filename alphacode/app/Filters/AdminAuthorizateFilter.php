@@ -12,7 +12,7 @@ class AdminAuthorizateFilter extends AuthenticateFilter
     public function before(RequestInterface $request, $arguments = null)
     {
         parent::before($request, $arguments);
-        $usuario =  $request->usuario ?? null;
+        $usuario = $request->usuario ?? null;
 
         if (!$usuario) {
             $response = service('response');
