@@ -66,5 +66,7 @@ docker network rm alphacode-network
 ```
 
 ### Acesso
+localhost:8000
+
 - email: admin@email.com
 - senha: 123456

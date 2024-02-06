@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class CandidatoVagaModel extends Model
 {
-    protected $table = 'canditatos_vagas';
+    protected $table = 'candidatos_vagas';
 
     protected $useSoftDeletes = true;
     protected $useTimestamps = true;

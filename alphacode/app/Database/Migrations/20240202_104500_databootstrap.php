@@ -169,7 +169,7 @@ class DataBootstrap extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addKey(['vaga_id', 'candidato_id'], false);
-        $this->forge->createTable('canditatos_vagas');
+        $this->forge->createTable('candidatos_vagas');
     }
 
     public function down()
@@ -177,6 +177,6 @@ class DataBootstrap extends Migration
         $this->forge->dropTable('usuarios');
         $this->forge->dropTable('candidatos');
         $this->forge->dropTable('vagas');
-        $this->forge->dropTable('canditatos_vagas');
+        $this->forge->dropTable('candidatos_vagas');
     }
 }
