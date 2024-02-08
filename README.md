@@ -1,58 +1,75 @@
-[![](https://site.alphacode.com.br/wp-content/uploads/2015/10/logocolor.png)](https://site.alphacode.com.br/)
 
-# Nossa empresa
+## Teste de PHP
 
-Nascida em 2015, a Alphacode é uma empresa que não para de crescer e de inovar.
-Formada por um time experiente de especialistas em tecnologia a empresa busca a cada dia trazer as soluções mais inovadoras do mercado mobile para os seus clientes.
-Todos os meses são novos aplicativos publicados nas lojas Play Store e Apple Store e um número maior de pessoas que utilizam nossas soluções para melhorar seu dia a dia.
-Seja para pedir uma pizza, assistir tv,  abrir o portão de casa ou pagar a conta de um churrasco com os amigos você pode estar usando um aplicativo criado por nós.
-E é com esse espirito inovador que a Alphacode vem se tornando referência no mercado mobile nacional.
+Nome: Ryan Alves Martins
 
-## Conheça mais sobre a Alphacode
+Teste: teste-php-2 (vagas/candidatos)
+### Instalação (Docker)
+iniciando o projeto
+```bash
+docker network create alphacode-network
 
-https://site.alphacode.com.br/
+```
 
-https://www.linkedin.com/company/alphacodeit/
+```bash
+docker volume create alphacode_mysql_data
+```
 
-# Descrição da vaga
+```bash
+docker run -d \
+  --name alphacode-mysql \
+  -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+  -e MYSQL_USER=alphacode \
+  -e MYSQL_DATABASE=alphacode_teste \
+  -e MYSQL_ROOT_PASSWORD=123456 \
+  -p 3306:3306 \
+  --network alphacode-network \
+  -v alphacode_mysql_data:/bitnami/mysql \
+  mysql:8.0.36-debian
+```
 
-Buscamos profissionais que sejam apaixonados por desenvolvimento, inovação e novas tecnologias, para integrar nosso time em projetos baseados em PHP, Ionic, Angular.
+```bash
+docker run -d \
+  --name alphacode-codeigniter \
+  -p 8000:8000 \
+  --network alphacode-network \
+  -e CODEIGNITER_PROJECT_NAME=alphacode \
+  -e CODEIGNITER_PORT_NUMBER=8000 \
+  -e CODEIGNITER_DATABASE_HOST=alphacode-mysql \
+  -e CODEIGNITER_DATABASE_PORT_NUMBER=3306 \
+  -e CODEIGNITER_DATABASE_NAME=alphacode_teste \
+  -e CODEIGNITER_DATABASE_USER=root \
+  -e CODEIGNITER_DATABASE_PASSWORD=123456 \
+  -v ${PWD}:/app \
+  bitnami/codeigniter:4.4.5
+```
 
-## Requisitos
+```bash
+docker exec -it alphacode-codeigniter bash -c "cd alphacode && composer install"
+docker exec -it alphacode-codeigniter bash -c "cd alphacode && php spark migrate"
+docker exec -it alphacode-codeigniter bash -c "cd alphacode && php spark db:seed BootstrapSeeder"
+```
 
-### **Obrigatórios:**
+parando o projeto
 
-- Mínimo 2 ano de experiência em desenvolvimento de sites e sistemas em PHP;
-- Desenvolvimento de APIs RESTful;
-- Conhecimentos em SQL e NoSQL;
-- Controle de versões (GIT).
+```bash
+docker stop alphacode-codeigniter alphacode-mysql
+```
 
-### **Diferenciais:**
+removendo o projeto
 
-- TDD;
-- Conhecimentos em Ionic;
-- Conhecimentos em serviços AWS;
-- Conhecimentos em Node.JS;
-- Experiência em metodologias ágeis (Scrum/Kanban).
+```bash
+docker stop alphacode-codeigniter alphacode-mysql
+docker rm alphacode-codeigniter alphacode-mysql -v
+docker volume rm alphacode_mysql_data
+docker network rm alphacode-network
+```
 
-## Benefícios
+### Postman
+Está disponível um postman_collection com todas as rotas de API da aplicação
 
-- Salário compatível com o mercado;
-- Vale Refeição;
-- Seguro de Vida;
-- Equipe unida, e divertida;
+### Acesso
+localhost:8000
 
-## Contratação
-
-Regime: CLT
-
-## Alocação
-
-À definir
-
-## Como se candidatar
-
-Para se candidatar, basta acessar a url de acordo com o nível e realizar o teste para a vaga:
-
-- [Desenvolvedor PHP - Teste 1](teste-php-1.md)
-- [Desenvolvedor PHP - Teste 2](teste-php-2.md)
+- email: admin@email.com
+- senha: 123456

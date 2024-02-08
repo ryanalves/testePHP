@@ -1,0 +1,423 @@
+{
+	"info": {
+		"_postman_id": "4afe3754-cdbf-4e69-a93d-aacdfdcf1f16",
+		"name": "Alphacode - Teste",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24445142"
+	},
+	"item": [
+		{
+			"name": "Vagas",
+			"item": [
+				{
+					"name": "Listar Vagas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{SERVER_URL}}/api/vaga"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Vaga",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{SERVER_URL}}/api/vaga/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Candidaturas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{SERVER_URL}}/api/vaga/candidaturas"
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Vaga",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Programador Junior\",\n    \"tipo\": \"CLT\",\n    \"status\": \"DISPONIVEL\",\n    \"area\": \"Tecnologia\",\n    \"pretensao\": 3575.25,\n    \"descricao\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/vaga"
+					},
+					"response": []
+				},
+				{
+					"name": "Candidatar para vaga",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Programador Junior\",\n    \"tipo\": \"CLT\",\n    \"status\": \"DISPONIVEL\",\n    \"area\": \"Tecnologia\",\n    \"pretensao\": 3575.25,\n    \"descricao\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/vaga/candidatar/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar candidatura",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Programador Junior\",\n    \"tipo\": \"CLT\",\n    \"status\": \"DISPONIVEL\",\n    \"area\": \"Tecnologia\",\n    \"pretensao\": 3575.25,\n    \"descricao\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/vaga/candidatar/6"
+					},
+					"response": []
+				},
+				{
+					"name": "Editar Vaga",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Programador Junior\",\n    \"tipo\": \"CLT\",\n    \"status\": \"DISPONIVEL\",\n    \"area\": \"Tecnologia\",\n    \"descricao\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/vaga/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Editar Status da Vaga",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"PAUSADO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/vaga/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Vaga",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": [4,5]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/vaga"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Listar Usuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{SERVER_URL}}/api/usuario"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{SERVER_URL}}/api/usuario/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": \"user2\",\n    \"email\": \"user3@email.com\",\n    \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/usuario"
+					},
+					"response": []
+				},
+				{
+					"name": "Editar Usuario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Ryan Alves Martins\",\n    \"email\": \"teste123@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/usuario/3"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Usuario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": [3,4]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/usuario"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Candidato",
+			"item": [
+				{
+					"name": "Listar Candidatos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{SERVER_URL}}/api/candidato"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Candidato",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{SERVER_URL}}/api/candidato/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Candidato",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": \"user2\",\n    \"email\": \"user5@email.com\",\n    \"senha\": \"123456\",\n    \"nome\": \"Ryan\",\n    \"data_nascimento\": \"2000-01-01\",\n    \"descricao\": \"Lorem Ipsum\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/candidato"
+					},
+					"response": []
+				},
+				{
+					"name": "Editar Candidato",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user1@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/candidato/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Editar Candidato(usuario comum)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Ryan Alves\",\n    \"senha\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/candidato"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Candidato",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{SERVER_URL}}/api/candidato"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Index",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{SERVER_URL}}/api/auth"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+							"    const data = JSON.parse(responseBody);",
+							"    console.log(data);",
+							"    if (data?.token) {",
+							"        pm.collectionVariables.set(\"TOKEN\", data.token);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"admin@email.com\",\n    \"senha\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{SERVER_URL}}/api/auth/login"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{TOKEN}}"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "SERVER_URL",
+			"value": "http://localhost:8000"
+		},
+		{
+			"key": "TOKEN",
+			"value": ""
+		}
+	]
+}
